@@ -45,8 +45,8 @@
   <ItemGroup>
     <Compile Include="BattleField.cs" />
     <Compile Include="BattleFieldGame.cs" />
-    <Compile Include="BattleFieldGameEngine.cs" />
     <Compile Include="Field.cs" />
+    <Compile Include="GameEngine.cs" />
     <Compile Include="Printer.cs" />
     <Compile Include="UserInput.cs" />
     <Compile Include="Validator.cs" />
