@@ -26,15 +26,15 @@ namespace BattleFieldNamespace
             //    return this.size;
             //}
 
-            //set
-            //{
+            set
+            {
             //    if (value < MinBattleFieldSize || value > MaxBattleFieldSize)
             //    {
             //        throw new ArgumentOutOfRangeException("The battlefield size must be between 1 and 10.");
             //    }
 
-            //    this.size = value;
-            //}
+                this.size = value;
+            }
         }
     }
 }

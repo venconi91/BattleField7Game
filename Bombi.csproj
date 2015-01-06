@@ -46,6 +46,7 @@
     <Compile Include="BattleField.cs" />
     <Compile Include="BattleFieldGame.cs" />
     <Compile Include="BattleGame.cs" />
+    <Compile Include="Field.cs" />
     <Compile Include="Validator.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@ namespace BattleFieldNamespace
     {
         //private const int MinBattleFieldSize = 1;
         //private const int MaxBattleFieldSize = 10;
-        //private const string EmptyFieldSymbol = "-";
+        private const string EmptyFieldSymbol = "-";
         //private const string DetonatedMineSymbol = "X";
 
         //private const double MinNumberOFMines = 0.15;
@@ -25,10 +25,10 @@ namespace BattleFieldNamespace
             return Convert.ToInt32(random.Next(min, max));
         }
 
-        string[,] Field;
+        //string[,] Field;
 
 
-        public void DetonateCell(int row, int column)
+        public void DetonateCell(int row, int column, string[,] Field)
         {
             int cellNumber;
 
@@ -44,9 +44,9 @@ namespace BattleFieldNamespace
             {
                 case 1:
                     {
-                        DetonateCellWithNumberOne(row, column);
+                        DetonateCellWithNumberOne(row, column, Field);
 
-                        WriteFieldOnTheConsole();
+                        WriteFieldOnTheConsole(Field);
 
                         detonatedBombs++;
 
@@ -54,18 +54,18 @@ namespace BattleFieldNamespace
                     }
                 case 2:
                     {
-                        DetonateCellWithNumberTwo(row, column);
+                        DetonateCellWithNumberTwo(row, column, Field);
 
-                        WriteFieldOnTheConsole();
+                        WriteFieldOnTheConsole(Field);
 
                         detonatedBombs++;
                         break;
                     }
                 case 3:
                     {
-                        DetonateCellWithNumberThree(row, column);
+                        DetonateCellWithNumberThree(row, column, Field);
 
-                        WriteFieldOnTheConsole();
+                        WriteFieldOnTheConsole(Field);
 
                         detonatedBombs++;
                         break;
@@ -73,9 +73,9 @@ namespace BattleFieldNamespace
 
                 case 4:
                     {
-                        DetonateCellWithNumberFour(row, column);
+                        DetonateCellWithNumberFour(row, column, Field);
 
-                        WriteFieldOnTheConsole();
+                        WriteFieldOnTheConsole(Field);
 
                         detonatedBombs++;
                         break;
@@ -83,9 +83,9 @@ namespace BattleFieldNamespace
                     ;
                 case 5:
                     {
-                        DetonateCellWithNumberFive(row, column);
+                        DetonateCellWithNumberFive(row, column, Field);
 
-                        WriteFieldOnTheConsole();
+                        WriteFieldOnTheConsole(Field);
 
                         detonatedBombs++;
                         break;
@@ -103,7 +103,7 @@ namespace BattleFieldNamespace
 
         int detonatedBombs = 0;
 
-        
+
         public int ReadFieldSize()
         {
             string userInput;
@@ -126,121 +126,71 @@ namespace BattleFieldNamespace
             return userInputNumber;
         }
 
-        //public Boolean isInRange(int inputNumber)
-        //{
-        //    if ((inputNumber < 1) || (inputNumber > 10))
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-
-        public void FillFieldWithNumbers()
-        {
-            int i;
-            int j;
-
-            while (counterOfNumbers + 1 <= 0.3 * fieldSize * fieldSize)
-            {
-                i = getRandomNumber(0, fieldSize - 1);
-                j = getRandomNumber(0, fieldSize - 1);
-
-                if (Field[i, j] == "-")
-                {
-                    Field[i, j] = Convert.ToString(getRandomNumber(1, 5));
-                    counterOfNumbers++;
-
-                    if (counterOfNumbers >= 0.15 * fieldSize * fieldSize)
-                    {
-                        int flag = getRandomNumber(0, 1);
-                        if (flag == 1)
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-
         int killedNumbers = 0;
 
-        //public bool check2()
-        //{
-        //    if (killedNumbers == counterOfNumbers)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        return false;
-        //    }
-        //}
-
+        
         public void Start()
         {
             fieldSize = ReadFieldSize();
 
-            Field = new string[fieldSize, fieldSize];
+            Field gameField = new Field(fieldSize, EmptyFieldSymbol); // rename it ro field
 
-            FillFieldWithEmptyCells();
+            string[,] Field = gameField.FieldBoard; // rename it field.gameField
 
-            FillFieldWithNumbers();
+            counterOfNumbers = gameField.CounterOfNumbersOnField;
+            //string[,] FieldWithEmptyCells = FillFieldWithEmptyCells(Field);
+
+            //FillFieldWithNumbers(fieldSize, FieldWithEmptyCells);
 
             Console.WriteLine();
 
-            WriteFieldOnTheConsole();
+            WriteFieldOnTheConsole(Field);
 
             while (killedNumbers < counterOfNumbers)
             {
                 Console.Write("Please Enter Coordinates : ");
 
-                string inputRowAndColumn = Console.ReadLine();
-                string[] rowAndColumnSplit = inputRowAndColumn.Split(' ');
-                int row;
-                int column;
+                try
+                {
+                    string inputRowAndColumn = Console.ReadLine();
+                    string[] rowAndColumnSplit = inputRowAndColumn.Split(' ');
+                    int row;
+                    int column;
 
-                if ((rowAndColumnSplit.Length) <= 0)
-                {
-                    row = -1;
-                    column = -1;
-                }
-                else
-                {
-                    if (!(int.TryParse(rowAndColumnSplit[0], out row)))
+                    if ((rowAndColumnSplit.Length) <= 0)
                     {
-                        row = -1;
+                        throw new IndexOutOfRangeException("Negative values are not allowed");
                     }
-                    if (!(int.TryParse(rowAndColumnSplit[1], out column)))
+                    else
                     {
-                        column = -1;
+                        // to format bool res = int.TryParse(text1, out num1);
+                        // if (res == false) ..
+
+                        if (!(int.TryParse(rowAndColumnSplit[0], out row)))
+                        {
+                            throw new Exception("Input should be number");
+                        }
+                        if (!(int.TryParse(rowAndColumnSplit[1], out column)))
+                        {
+                            throw new Exception("Input should be number");
+                        }
                     }
+
+                    if ((IsOutOfField(row, column)))
+                    {
+                        throw new IndexOutOfRangeException("This Move Is Out Of Area.");
+                    }
+
+                    DetonateCell(row, column, Field);
                 }
-                
-                if ((IsOutOfField(row, column)))
+                catch (Exception)
                 {
-                    Console.WriteLine("This Move Is Out Of Area.");
+                    Console.WriteLine("Invalid Move");
                 }
-                else
-                {
-                    DetonateCell(row, column);
-                }
+
             }
 
             Console.WriteLine("Game Over.Detonated Mines {0}", detonatedBombs);
-        }
-
-        private void FillFieldWithEmptyCells()
-        {
-            for (int i = 0; i <= fieldSize - 1; i++)
-            {
-                for (int j = 0; j <= fieldSize - 1; j++)
-                {
-                    Field[i, j] = "-";
-                }
-            }
         }
 
         public bool IsOutOfField(int row, int column)
@@ -252,9 +202,9 @@ namespace BattleFieldNamespace
             return true;
         }
 
-        private void WriteFieldOnTheConsole()
+        private void WriteFieldOnTheConsole(string[,] Field)
         {
-            // this method depends on global Field[i,j] !!!
+
 
             Console.Write("   ");
             for (int k = 0; k <= fieldSize - 1; k++)
@@ -282,7 +232,7 @@ namespace BattleFieldNamespace
             }
         }
 
-        public void DetonateCellWithNumberOne(int row, int column)
+        public void DetonateCellWithNumberOne(int row, int column, string[,] Field)
         {
             Field[row, column] = "X";
             killedNumbers++;
@@ -322,9 +272,9 @@ namespace BattleFieldNamespace
                 Field[row + 1, column + 1] = "X";
             }
         }
-        public void DetonateCellWithNumberTwo(int row, int column)
+        public void DetonateCellWithNumberTwo(int row, int column, string[,] Field)
         {
-            DetonateCellWithNumberOne(row, column);
+            DetonateCellWithNumberOne(row, column, Field);
 
             if (row - 1 >= 0)
             {
@@ -363,9 +313,9 @@ namespace BattleFieldNamespace
             }
         }
 
-        public void DetonateCellWithNumberThree(int row, int column)
+        public void DetonateCellWithNumberThree(int row, int column, string[,] Field)
         {
-            DetonateCellWithNumberTwo(row, column);
+            DetonateCellWithNumberTwo(row, column, Field);
 
             if (row - 2 >= 0)
             {
@@ -404,9 +354,9 @@ namespace BattleFieldNamespace
             }
         }
 
-        public void DetonateCellWithNumberFour(int row, int column)
+        public void DetonateCellWithNumberFour(int row, int column, string[,] Field)
         {
-            DetonateCellWithNumberThree(row, column);
+            DetonateCellWithNumberThree(row, column, Field);
 
             if ((row - 1 >= 0) && (column - 2 >= 0))
             {
@@ -480,9 +430,9 @@ namespace BattleFieldNamespace
                 Field[row + 2, column + 1] = "X";
             }
         }
-        public void DetonateCellWithNumberFive(int row, int column)
+        public void DetonateCellWithNumberFive(int row, int column, string[,] Field)
         {
-            DetonateCellWithNumberFour(row, column);
+            DetonateCellWithNumberFour(row, column, Field);
 
             if ((row - 2 >= 0) && (column - 2 >= 0))
             {
