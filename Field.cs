@@ -45,7 +45,7 @@ namespace BattleFieldNamespace
 
         }
 
-        public string[,] FieldBoard
+        public string[,] GameField
         {
             get
             {
