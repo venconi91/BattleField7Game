@@ -6,12 +6,12 @@ using System.Text;
 
 namespace BattleFieldNamespace
 {
-    class BattleField : BattleGame // tuka naslediavame osbhtata igra i pravilata
+    class BattleFieldGame //: BattleGame // tuka naslediavame osbhtata igra i pravilata
     {
 
         static void Main(string[] args)
         {
-            BattleField BF = new BattleField();
+            BattleFieldGameEngine BF = new BattleFieldGameEngine();
 
             BF.Start();
         }
