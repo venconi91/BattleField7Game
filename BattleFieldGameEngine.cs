@@ -19,58 +19,6 @@ namespace BattleFieldNamespace
 
         int fieldSize;
 
-        private static int getRandomNumber(int min, int max)
-        {
-            Random random = new Random();
-            return Convert.ToInt32(random.Next(min, max));
-        }
-
-        //string[,] Field;
-
-
-        public void DetonateCell(int row, int column, string[,] Field)
-        {
-            if ((Field[row, column] == "X") || ((Field[row, column]) == "-"))
-            {
-                throw new ArgumentOutOfRangeException("Cannot detonate the cell");
-            }
-
-            int cellNumber = Convert.ToInt32(Field[row, column]);
-
-            switch (cellNumber)
-            {
-                case 1:
-                    DetonateCellWithNumberOne(row, column, Field);
-                    Printer.PrintOnConsole(Field);
-                    detonatedBombs++;
-                    break;
-                case 2:
-                    DetonateCellWithNumberTwo(row, column, Field);
-                    Printer.PrintOnConsole(Field);
-                    detonatedBombs++;
-                    break;
-                case 3:
-                    DetonateCellWithNumberThree(row, column, Field);
-                    Printer.PrintOnConsole(Field);
-                    detonatedBombs++;
-                    break;
-                case 4:
-                    DetonateCellWithNumberFour(row, column, Field);
-                    Printer.PrintOnConsole(Field);
-                    detonatedBombs++;
-                    break;
-                case 5:
-                    DetonateCellWithNumberFive(row, column, Field);
-                    Printer.PrintOnConsole(Field);
-                    detonatedBombs++;
-                    break;
-                default:
-                    throw new Exception("invalid number");
-            }
-        }
-
-        int detonatedBombs = 0;
-
         public int ReadFieldSize()
         {
             string userInput;
@@ -95,7 +43,6 @@ namespace BattleFieldNamespace
             return parsedFieldSize;
         }
 
-        int killedNumbers = 0;
 
         public void Start()
         {
@@ -110,7 +57,11 @@ namespace BattleFieldNamespace
             Console.WriteLine();
 
             Printer.PrintOnConsole(Field);
-            while (killedNumbers < counterOfNumbers)
+
+            BattleField battleField = new BattleField(field, fieldSize);
+
+
+            while (battleField.RemainBombsForDetonating())
             {
                 Console.Write("Please Enter Coordinates : ");
 
@@ -124,13 +75,15 @@ namespace BattleFieldNamespace
                     int row = coordinates[0];
                     int column = coordinates[1];
 
-                    DetonateCell(row, column, Field);
+                    battleField.DetonateCell(row, column, Field);
                 }
                 catch (Exception)
                 {
                     Console.WriteLine("Invalid Move");
                 }
+
             }
+            int detonatedBombs = battleField.DetonatedBombs;
 
             Console.WriteLine("Game Over.Detonated Mines {0}", detonatedBombs);
         }
@@ -144,245 +97,5 @@ namespace BattleFieldNamespace
             return true;
         }
 
-
-        public void DetonateCellWithNumberOne(int row, int column, string[,] Field)
-        {
-            Field[row, column] = "X";
-            killedNumbers++;
-            if ((row - 1 >= 0) && (column - 1 >= 0))
-            {
-                if ((Field[row - 1, column - 1] != "X") && (Field[row - 1, column - 1] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row - 1, column - 1] = "X";
-            }
-
-            if ((row + 1 <= fieldSize - 1) && (column - 1 >= 0))
-            {
-                if ((Field[row + 1, column - 1] != "X") && (Field[row + 1, column - 1] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row + 1, column - 1] = "X";
-            }
-
-            if ((row - 1 >= 0) && (column + 1 <= fieldSize - 1))
-            {
-                if ((Field[row - 1, column + 1] != "X") && (Field[row - 1, column + 1] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row - 1, column + 1] = "X";
-            }
-
-            if ((row + 1 <= fieldSize - 1) && (column + 1 <= fieldSize - 1))
-            {
-                if ((Field[row + 1, column + 1] != "X") && (Field[row + 1, column + 1] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row + 1, column + 1] = "X";
-            }
-        }
-        public void DetonateCellWithNumberTwo(int row, int column, string[,] Field)
-        {
-            DetonateCellWithNumberOne(row, column, Field);
-
-            if (row - 1 >= 0)
-            {
-                if ((Field[row - 1, column] != "X") && (Field[row - 1, column] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row - 1, column] = "X";
-            }
-
-            if (column - 1 >= 0)
-            {
-                if ((Field[row, column - 1] != "X") && (Field[row, column - 1] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row, column - 1] = "X";
-            }
-
-            if (column + 1 <= fieldSize - 1)
-            {
-                if ((Field[row, column + 1] != "X") && (Field[row, column + 1] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row, column + 1] = "X";
-            }
-
-            if (row + 1 <= fieldSize - 1)
-            {
-                if ((Field[row + 1, column] != "X") && (Field[row + 1, column] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row + 1, column] = "X";
-            }
-        }
-
-        public void DetonateCellWithNumberThree(int row, int column, string[,] Field)
-        {
-            DetonateCellWithNumberTwo(row, column, Field);
-
-            if (row - 2 >= 0)
-            {
-                if ((Field[row - 2, column] != "X") && (Field[row - 2, column] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row - 2, column] = "X";
-            }
-
-            if (column - 2 >= 0)
-            {
-                if ((Field[row, column - 2] != "X") && (Field[row, column - 2] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row, column - 2] = "X";
-            }
-
-            if (column + 2 <= fieldSize - 1)
-            {
-                if ((Field[row, column + 2] != "X") && (Field[row, column + 2] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row, column + 2] = "X";
-            }
-
-            if (row + 2 <= fieldSize - 1)
-            {
-                if ((Field[row + 2, column] != "X") && (Field[row + 2, column] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row + 2, column] = "X";
-            }
-        }
-
-        public void DetonateCellWithNumberFour(int row, int column, string[,] Field)
-        {
-            DetonateCellWithNumberThree(row, column, Field);
-
-            if ((row - 1 >= 0) && (column - 2 >= 0))
-            {
-                if ((Field[row - 1, column - 2] != "X") && (Field[row - 1, column - 2] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row - 1, column - 2] = "X";
-            }
-
-            if ((row + 1 <= fieldSize - 1) && (column - 2 >= 0))
-            {
-                if ((Field[row + 1, column - 2] != "X") && (Field[row + 1, column - 2] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row + 1, column - 2] = "X";
-            }
-
-            if ((row - 2 >= 0) && (column - 1 >= 0))
-            {
-                if ((Field[row - 2, column - 1] != "X") && (Field[row - 2, column - 1] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row - 2, column - 1] = "X";
-            }
-
-            if ((row + 2 <= fieldSize - 1) && (column - 1 >= 0))
-            {
-                if ((Field[row + 2, column - 1] != "X") && (Field[row + 2, column - 1] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row + 2, column - 1] = "X";
-            }
-
-            if ((row - 1 >= 0) && (column + 2 <= fieldSize - 1))
-            {
-                if ((Field[row - 1, column + 2] != "X") && (Field[row - 1, column + 2] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row - 1, column + 2] = "X";
-            }
-
-            if ((row + 1 <= fieldSize - 1) && (column + 2 <= fieldSize - 1))
-            {
-                if ((Field[row + 1, column + 2] != "X") && (Field[row + 1, column + 2] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row + 1, column + 2] = "X";
-            }
-
-            if ((row - 2 >= 0) && (column + 1 <= fieldSize - 1))
-            {
-                if ((Field[row - 2, column + 1] != "X") && (Field[row - 2, column + 1] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row - 2, column + 1] = "X";
-            }
-
-            if ((row + 2 <= fieldSize - 1) && (column + 1 <= fieldSize - 1))
-            {
-                if ((Field[row + 2, column + 1] != "X") && (Field[row + 2, column + 1] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row + 2, column + 1] = "X";
-            }
-        }
-        public void DetonateCellWithNumberFive(int row, int column, string[,] Field)
-        {
-            DetonateCellWithNumberFour(row, column, Field);
-
-            if ((row - 2 >= 0) && (column - 2 >= 0))
-            {
-                if ((Field[row - 2, column - 2] != "X") && (Field[row - 2, column - 2] != "-"))
-                {
-                    killedNumbers++;
-                }
-
-                Field[row - 2, column - 2] = "X";
-            }
-
-            if ((row + 2 <= fieldSize - 1) && (column - 2 >= 0))
-            {
-                if ((Field[row + 2, column - 2] != "X") && (Field[row + 2, column - 2] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row + 2, column - 2] = "X";
-            }
-
-            if ((row - 2 >= 0) && (column + 2 <= fieldSize - 1))
-            {
-                if ((Field[row - 2, column + 2] != "X") && (Field[row - 2, column + 2] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row - 2, column + 2] = "X";
-            }
-
-            if ((row + 2 <= fieldSize - 1) && (column + 2 <= fieldSize - 1))
-            {
-                if ((Field[row + 2, column + 2] != "X") && (Field[row + 2, column + 2] != "-"))
-                {
-                    killedNumbers++;
-                }
-                Field[row + 2, column + 2] = "X";
-            }
-        }
     }
 }
