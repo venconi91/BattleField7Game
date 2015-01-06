@@ -43,7 +43,7 @@ namespace BattleFieldNamespace
 
             return remainUndetonatedBombs;
         }
-        public void DetonateCell(int row, int column, string[,] Field)
+        public void DetonateCell(int row, int column)
         {
             if ((Field[row, column] == "X") || ((Field[row, column]) == "-"))
             {
@@ -55,27 +55,27 @@ namespace BattleFieldNamespace
             switch (cellNumber)
             {
                 case 1:
-                    DetonateCellWithNumberOne(row, column, Field);
+                    DetonateCellWithNumberOne(row, column);
                     Printer.PrintOnConsole(Field);
                     detonatedBombs++;
                     break;
                 case 2:
-                    DetonateCellWithNumberTwo(row, column, Field);
+                    DetonateCellWithNumberTwo(row, column);
                     Printer.PrintOnConsole(Field);
                     detonatedBombs++;
                     break;
                 case 3:
-                    DetonateCellWithNumberThree(row, column, Field);
+                    DetonateCellWithNumberThree(row, column);
                     Printer.PrintOnConsole(Field);
                     detonatedBombs++;
                     break;
                 case 4:
-                    DetonateCellWithNumberFour(row, column, Field);
+                    DetonateCellWithNumberFour(row, column);
                     Printer.PrintOnConsole(Field);
                     detonatedBombs++;
                     break;
                 case 5:
-                    DetonateCellWithNumberFive(row, column, Field);
+                    DetonateCellWithNumberFive(row, column);
                     Printer.PrintOnConsole(Field);
                     detonatedBombs++;
                     break;
@@ -84,7 +84,7 @@ namespace BattleFieldNamespace
             }
         }
 
-        public void DetonateCellWithNumberOne(int row, int column, string[,] Field)
+        public void DetonateCellWithNumberOne(int row, int column)
         {
             Field[row, column] = "X";
             killedNumbers++;
@@ -124,9 +124,9 @@ namespace BattleFieldNamespace
                 Field[row + 1, column + 1] = "X";
             }
         }
-        public void DetonateCellWithNumberTwo(int row, int column, string[,] Field)
+        public void DetonateCellWithNumberTwo(int row, int column)
         {
-            DetonateCellWithNumberOne(row, column, Field);
+            DetonateCellWithNumberOne(row, column);
 
             if (row - 1 >= 0)
             {
@@ -165,9 +165,9 @@ namespace BattleFieldNamespace
             }
         }
 
-        public void DetonateCellWithNumberThree(int row, int column, string[,] Field)
+        public void DetonateCellWithNumberThree(int row, int column)
         {
-            DetonateCellWithNumberTwo(row, column, Field);
+            DetonateCellWithNumberTwo(row, column);
 
             if (row - 2 >= 0)
             {
@@ -206,9 +206,9 @@ namespace BattleFieldNamespace
             }
         }
 
-        public void DetonateCellWithNumberFour(int row, int column, string[,] Field)
+        public void DetonateCellWithNumberFour(int row, int column)
         {
-            DetonateCellWithNumberThree(row, column, Field);
+            DetonateCellWithNumberThree(row, column);
 
             if ((row - 1 >= 0) && (column - 2 >= 0))
             {
@@ -282,9 +282,9 @@ namespace BattleFieldNamespace
                 Field[row + 2, column + 1] = "X";
             }
         }
-        public void DetonateCellWithNumberFive(int row, int column, string[,] Field)
+        public void DetonateCellWithNumberFive(int row, int column)
         {
-            DetonateCellWithNumberFour(row, column, Field);
+            DetonateCellWithNumberFour(row, column);
 
             if ((row - 2 >= 0) && (column - 2 >= 0))
             {

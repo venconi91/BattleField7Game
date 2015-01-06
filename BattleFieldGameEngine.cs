@@ -75,7 +75,7 @@ namespace BattleFieldNamespace
                     int row = coordinates[0];
                     int column = coordinates[1];
 
-                    battleField.DetonateCell(row, column, Field);
+                    battleField.DetonateCell(row, column);
                 }
                 catch (Exception)
                 {
