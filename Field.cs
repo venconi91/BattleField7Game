@@ -8,32 +8,25 @@ namespace BattleFieldNamespace
     class Field
     {
         private int fieldSize;
-        private string emptySymbol;
         // counter of numbers property
-        private int counterOfNumbersOnField;
+        private int mineCounter;
 
         // change location of Random random = new Random(); 
 
         private string[,] field;
 
-        public Field(int fieldSize, string emptySymbol)
-        {
+        public Field(int fieldSize) {
             this.fieldSize = fieldSize;
-            this.emptySymbol = emptySymbol;
             this.field = new String[fieldSize, fieldSize];
-            this.CounterOfNumbersOnField = 0;
+            this.MineCounter = 0;
 
-            FillField();
+
+            FillEmptyCells();
+            FillNumberCells();
         }
 
         
-
-        private void FillField() {
-            FillCellsWithEmptySymbol();
-            FillCellsWithNumbers();
-        }
-
-        private void FillCellsWithEmptySymbol()
+        private void FillEmptyCells()
         {
             for (int col = 0; col <= this.fieldSize - 1; col++)
             {
@@ -53,36 +46,37 @@ namespace BattleFieldNamespace
             }
         }
 
-        public int CounterOfNumbersOnField 
+        public int MineCounter 
         {
             get
             {
-                return this.counterOfNumbersOnField;
+                return this.mineCounter;
             }
             private set 
             {
-                this.counterOfNumbersOnField = value;
+                this.mineCounter = value;
             }
         }
 
-        private void FillCellsWithNumbers()
+        private void FillNumberCells()
         {
             int i;
             int j;
 
-            while (this.counterOfNumbersOnField + 1 <= 0.3 * this.fieldSize * this.fieldSize)
+            while (this.mineCounter + 1 <= 0.3 * this.fieldSize * this.fieldSize)
             {
-                i = getRandomNumber(0, this.fieldSize - 1);
-                j = getRandomNumber(0, this.fieldSize - 1);
+                Random random = new Random();
+                i = Convert.ToInt32(random.Next(0, this.fieldSize - 1));
+                j = Convert.ToInt32(random.Next(0, this.fieldSize - 1));
 
                 if (this.field[i, j] == "-")
                 {
-                    this.field[i, j] = Convert.ToString(getRandomNumber(1, 5));
-                    this.counterOfNumbersOnField++;
+                    this.field[i, j] = Convert.ToString(random.Next(1, 5));
+                    this.mineCounter++;
 
-                    if (this.counterOfNumbersOnField >= 0.15 * this.fieldSize * this.fieldSize)
+                    if (this.mineCounter >= 0.15 * this.fieldSize * this.fieldSize)
                     {
-                        int flag = getRandomNumber(0, 1);
+                        int flag = Convert.ToInt32(random.Next(0, 1));
                         if (flag == 1)
                         {
                             break;
@@ -90,11 +84,6 @@ namespace BattleFieldNamespace
                     }
                 }
             }
-        }
-        private static int getRandomNumber(int min, int max)
-        {
-            Random random = new Random();
-            return Convert.ToInt32(random.Next(min, max));
         }
     }
 }

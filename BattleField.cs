@@ -38,7 +38,7 @@ namespace BattleFieldNamespace
         }
 
         public bool RemainBombsForDetonating() {
-            int undetonatedBombs = field.CounterOfNumbersOnField- killedNumbers;
+            int undetonatedBombs = field.MineCounter- killedNumbers;
             bool remainUndetonatedBombs = undetonatedBombs > 0;
 
             return remainUndetonatedBombs;

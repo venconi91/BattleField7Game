@@ -11,7 +11,7 @@ namespace BattleFieldNamespace
 
         static void Main(string[] args)
         {
-            BattleFieldGameEngine BF = new BattleFieldGameEngine();
+            GameEngine BF = new GameEngine();
 
             BF.Start();
         }
