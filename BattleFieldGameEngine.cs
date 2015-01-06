@@ -41,27 +41,27 @@ namespace BattleFieldNamespace
             {
                 case 1:
                     DetonateCellWithNumberOne(row, column, Field);
-                    WriteFieldOnTheConsole(Field);
+                    Printer.PrintOnConsole(Field);
                     detonatedBombs++;
                     break;
                 case 2:
                     DetonateCellWithNumberTwo(row, column, Field);
-                    WriteFieldOnTheConsole(Field);
+                    Printer.PrintOnConsole(Field);
                     detonatedBombs++;
                     break;
                 case 3:
                     DetonateCellWithNumberThree(row, column, Field);
-                    WriteFieldOnTheConsole(Field);
+                    Printer.PrintOnConsole(Field);
                     detonatedBombs++;
                     break;
                 case 4:
                     DetonateCellWithNumberFour(row, column, Field);
-                    WriteFieldOnTheConsole(Field);
+                    Printer.PrintOnConsole(Field);
                     detonatedBombs++;
                     break;
                 case 5:
                     DetonateCellWithNumberFive(row, column, Field);
-                    WriteFieldOnTheConsole(Field);
+                    Printer.PrintOnConsole(Field);
                     detonatedBombs++;
                     break;
                 default:
@@ -109,8 +109,7 @@ namespace BattleFieldNamespace
 
             Console.WriteLine();
 
-            WriteFieldOnTheConsole(Field);
-
+            Printer.PrintOnConsole(Field);
             while (killedNumbers < counterOfNumbers)
             {
                 Console.Write("Please Enter Coordinates : ");
@@ -131,7 +130,6 @@ namespace BattleFieldNamespace
                 {
                     Console.WriteLine("Invalid Move");
                 }
-
             }
 
             Console.WriteLine("Game Over.Detonated Mines {0}", detonatedBombs);
@@ -146,33 +144,6 @@ namespace BattleFieldNamespace
             return true;
         }
 
-        private void WriteFieldOnTheConsole(string[,] Field)
-        {
-            Console.Write("   ");
-            for (int k = 0; k <= fieldSize - 1; k++)
-            {
-                Console.Write(k + " ");
-            }
-            Console.WriteLine();
-            Console.Write("   ");
-            for (int k = 0; k <= fieldSize - 1; k++)
-            {
-                Console.Write("--");
-            }
-            Console.WriteLine();
-
-            for (int i = 0; i <= fieldSize - 1; i++)
-            {
-                Console.Write(i + "| ");
-                for (int j = 0; j <= fieldSize - 1; j++)
-                {
-                    Console.Write(Field[i, j] + " ");
-                }
-
-                Console.WriteLine();
-                Console.WriteLine();
-            }
-        }
 
         public void DetonateCellWithNumberOne(int row, int column, string[,] Field)
         {
