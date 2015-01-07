@@ -7,19 +7,23 @@ namespace BattleFieldNamespace
 {
     class BattleField
     {
-        private Field field;
+        private const string EmptyFieldSymbol = "-";
+        private const string DetonatedMineSymbol = "X";
+
+        private SquareField field;
         private int detonatedBombs;
         private int killedNumbers;
         private string[,] Field;
         private int fieldSize;
 
-        public BattleField(Field field, int fieldSize)
+        public BattleField(SquareField field)
         {
             this.field = field;
+            this.Field = field.GameField;
+            this.fieldSize = field.FieldSize;
+
             this.detonatedBombs = 0;
             this.killedNumbers = 0;
-            this.Field = field.GameField;
-            this.fieldSize = fieldSize;
         }
 
         public int KilledNumbers
@@ -47,7 +51,9 @@ namespace BattleFieldNamespace
 
         public void Detonate(int row, int column)
         {
-            if ((Field[row, column] == "X") || ((Field[row, column]) == "-"))
+            bool canDetonate = (Field[row, column] != DetonatedMineSymbol) || ((Field[row, column]) != EmptyFieldSymbol);
+
+            if (!canDetonate)
             {
                 throw new ArgumentOutOfRangeException("Cannot detonate the cell");
             }
@@ -62,63 +68,63 @@ namespace BattleFieldNamespace
 
         public void DetonateArea(int cellNumber, int col, int row)
         {
-            Field[row, col] = "X";
+            Field[row, col] = DetonatedMineSymbol;
             killedNumbers++;
 
 
             if (cellNumber >= 1)
             {
-                MarkCell(row - 1, col - 1);
-                MarkCell(row + 1, col + 1);
-                MarkCell(row - 1, col + 1);
-                MarkCell(row + 1, col - 1);
+                DetonateCell(row - 1, col - 1);
+                DetonateCell(row + 1, col + 1);
+                DetonateCell(row - 1, col + 1);
+                DetonateCell(row + 1, col - 1);
             }
             if (cellNumber >= 2)
             {
-                MarkCell(row - 1, col);
-                MarkCell(row + 1, col);
-                MarkCell(row, col + 1);
-                MarkCell(row, col - 1);
+                DetonateCell(row - 1, col);
+                DetonateCell(row + 1, col);
+                DetonateCell(row, col + 1);
+                DetonateCell(row, col - 1);
             }
             if (cellNumber >= 3)
             {
-                MarkCell(row + 2, col);
-                MarkCell(row - 2, col);
-                MarkCell(row, col + 2);
-                MarkCell(row, col - 2);
+                DetonateCell(row + 2, col);
+                DetonateCell(row - 2, col);
+                DetonateCell(row, col + 2);
+                DetonateCell(row, col - 2);
             }
             if (cellNumber >= 4)
             {
-                MarkCell(row + 2, col + 1);
-                MarkCell(row + 2, col - 1);
-                MarkCell(row - 2, col + 1);
-                MarkCell(row - 2, col - 1);
-                MarkCell(row - 1, col + 2);
-                MarkCell(row - 1, col - 2);
-                MarkCell(row + 1, col + 2);
-                MarkCell(row + 1, col - 2);
+                DetonateCell(row + 2, col + 1);
+                DetonateCell(row + 2, col - 1);
+                DetonateCell(row - 2, col + 1);
+                DetonateCell(row - 2, col - 1);
+                DetonateCell(row - 1, col + 2);
+                DetonateCell(row - 1, col - 2);
+                DetonateCell(row + 1, col + 2);
+                DetonateCell(row + 1, col - 2);
 
             }
             if (cellNumber == 5)
             {
-                MarkCell(row - 2, col + 2);
-                MarkCell(row - 2, col - 2);
-                MarkCell(row + 2, col - 2);
-                MarkCell(row + 2, col + 2);
+                DetonateCell(row - 2, col + 2);
+                DetonateCell(row - 2, col - 2);
+                DetonateCell(row + 2, col - 2);
+                DetonateCell(row + 2, col + 2);
             }
         }
 
-        public void MarkCell(int row, int col)
+        public void DetonateCell(int row, int col)
         {
             bool isInRange = (row < fieldSize && row >= 0) && (col >= 0 && col < fieldSize);
 
-            if (isInRange && (Field[row,col] != "X" && Field[row,col] != "-"))
+            if (isInRange && (Field[row, col] != DetonatedMineSymbol && Field[row, col] != EmptyFieldSymbol))
             {
                 killedNumbers++;
             }
-            if (isInRange && Field[row, col] != "X")
+            if (isInRange && Field[row, col] != DetonatedMineSymbol)
             {
-                Field[row, col] = "X";
+                Field[row, col] = DetonatedMineSymbol;
             }
         }
 

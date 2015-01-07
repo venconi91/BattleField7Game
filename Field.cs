@@ -5,37 +5,22 @@ using System.Text;
 
 namespace BattleFieldNamespace
 {
-    class Field
+    class SquareField : IField
     {
+        private const double MinMinesFactor = 0.15;
+        private const double MaxMinesFactor = 0.3;
+
         private int fieldSize;
-        // counter of numbers property
+        private string[,] field;
         private int mineCounter;
 
-        // change location of Random random = new Random(); 
-
-        private string[,] field;
-
-        public Field(int fieldSize) {
+        public SquareField(int fieldSize)
+        {
             this.fieldSize = fieldSize;
             this.field = new String[fieldSize, fieldSize];
-            this.MineCounter = 0;
+            this.mineCounter = 0;
 
-
-            FillEmptyCells();
-            FillNumberCells();
-        }
-
-        
-        private void FillEmptyCells()
-        {
-            for (int col = 0; col <= this.fieldSize - 1; col++)
-            {
-                for (int row = 0; row <= this.fieldSize - 1; row++)
-                {
-                    this.field[col, row] = "-";
-                }
-            }
-
+            FillField();
         }
 
         public string[,] GameField
@@ -46,38 +31,62 @@ namespace BattleFieldNamespace
             }
         }
 
-        public int MineCounter 
+        public int MineCounter
         {
             get
             {
                 return this.mineCounter;
             }
-            private set 
+        }
+        public int FieldSize
+        {
+            get
             {
-                this.mineCounter = value;
+                return this.fieldSize;
+            }
+        }
+
+        private void FillField()
+        {
+            FillEmptyCells();
+            FillNumberCells();
+        }
+
+        private void FillEmptyCells()
+        {
+            for (int col = 0; col < this.fieldSize; col++)
+            {
+                for (int row = 0; row < this.fieldSize; row++)
+                {
+                    this.field[col, row] = "-";
+                }
             }
         }
 
         private void FillNumberCells()
         {
-            int i;
-            int j;
+            Random random = new Random();
 
-            while (this.mineCounter + 1 <= 0.3 * this.fieldSize * this.fieldSize)
+            double maxNumberOfMines = MaxMinesFactor * this.fieldSize * this.fieldSize;
+            double minNumberOfMines = MinMinesFactor * this.fieldSize * this.fieldSize;
+
+            while (this.mineCounter <= maxNumberOfMines)
             {
-                Random random = new Random();
-                i = Convert.ToInt32(random.Next(0, this.fieldSize - 1));
-                j = Convert.ToInt32(random.Next(0, this.fieldSize - 1));
+                int randomRowPosition = Convert.ToInt32(random.Next(0, this.fieldSize));
+                int randomColPosition = Convert.ToInt32(random.Next(0, this.fieldSize));
 
-                if (this.field[i, j] == "-")
+                string currentCellSymbol = this.field[randomRowPosition, randomColPosition];
+
+                if (currentCellSymbol == "-")
                 {
-                    this.field[i, j] = Convert.ToString(random.Next(1, 5));
+                    this.field[randomRowPosition, randomColPosition] = Convert.ToString(random.Next(1, 6));
                     this.mineCounter++;
 
-                    if (this.mineCounter >= 0.15 * this.fieldSize * this.fieldSize)
+                    if (this.mineCounter >= minNumberOfMines)
                     {
-                        int flag = Convert.ToInt32(random.Next(0, 1));
-                        if (flag == 1)
+                        bool areMinesEnough = Convert.ToInt32(random.Next(0, 1)) == 1;
+
+                        if (areMinesEnough)
                         {
                             break;
                         }

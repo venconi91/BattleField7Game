@@ -6,9 +6,8 @@ using System.Text;
 
 namespace BattleFieldNamespace
 {
-    class BattleFieldGame //: BattleGame // tuka naslediavame osbhtata igra i pravilata
+    class BattleFieldGame 
     {
-
         static void Main(string[] args)
         {
             GameEngine BF = new GameEngine();
