@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BattleFieldNamespace
 {
-    class Validator
+    public static class Validator
     {
 
         public static int[] checkStringForValidCoordinates(string inputCoordinates, int fieldSize)

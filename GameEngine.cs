@@ -11,10 +11,9 @@ namespace BattleFieldNamespace
         {
             int fieldSize = UserInput.ReadFieldSize();
 
-            SquareField field = new SquareField(fieldSize);
-
             int[] squareFieldSizes = new int[1] { fieldSize };
-            Field2DFactory.Factory.Get("rectangle", squareFieldSizes);
+
+            IField field = Field2DFactory.Factory.Get("square", squareFieldSizes);
 
             Printer.PrintOnConsole(field.GameField);
 

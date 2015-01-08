@@ -7,6 +7,8 @@ namespace BattleFieldNamespace
 {
     interface IField
     {
-         int FieldSize { get; }
+        int[] FieldSize { get; }
+        string[,] GameField { get; }
+        int MineCounter { get; }
     }
 }

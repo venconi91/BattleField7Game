@@ -10,17 +10,17 @@ namespace BattleFieldNamespace
         private const string EmptyFieldSymbol = "-";
         private const string DetonatedMineSymbol = "X";
 
-        private SquareField field;
+        private IField field;
         private int detonatedBombs;
         private int killedNumbers;
         private string[,] Field;
         private int fieldSize;
 
-        public BattleField(SquareField field)
+        public BattleField(IField field)
         {
             this.field = field;
             this.Field = field.GameField;
-            this.fieldSize = field.FieldSize;
+            this.fieldSize = field.FieldSize[0];
 
             this.detonatedBombs = 0;
             this.killedNumbers = 0;

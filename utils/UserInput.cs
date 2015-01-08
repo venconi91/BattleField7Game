@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BattleFieldNamespace
 {
-    class UserInput
+    public class UserInput
     {
         public const int MinFieldSize = 2;
         public const int MaxFieldSize = 10;

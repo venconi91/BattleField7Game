@@ -13,7 +13,7 @@ namespace BattleFieldNamespace
             {
                 switch (shape)
                 {
-                    case "rectangle":
+                    case "square":
                         return new SquareField(size[0]);
                     case "circle":
                         //return new Circle();
